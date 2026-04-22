@@ -1,94 +1,42 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Play Game</title>
-    <style>
-        body {
-            margin: 0;
-            background: #050814;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 18px 24px;
-            background: #0b1020;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .back-link {
-            color: #0ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .title {
-            font-size: 1.4rem;
-            margin: 0;
-        }
-
-        .frame-wrap {
-            padding: 16px;
-        }
-
-        iframe {
-            width: 100%;
-            height: calc(100vh - 90px);
-            border: none;
-            border-radius: 12px;
-            background: #111;
-        }
-
-        .error-box {
-            padding: 40px;
-            text-align: center;
-            color: #ddd;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="topbar">
-        <a class="back-link" href="index.html">← Back</a>
-        <h1 class="title" id="gameTitle">Loading...</h1>
-    </div>
+  <div class="topbar">
+    <a href="index.html" class="back-btn">Back</a>
+    <h1 id="gameTitle">Loading...</h1>
+  </div>
 
-    <div class="frame-wrap" id="frameWrap">
-        <iframe id="gameFrame" src="" allowfullscreen></iframe>
-    </div>
+  <div class="frame-wrap">
+    <iframe id="frame" scrolling="no"></iframe>
+  </div>
 
-    <script>
-        const games = [
-            { title: "Minecraft", folder: "minecraft" },
-            { title: "Geometry Dash", folder: "geometry-dash" },
-            { title: "Hollow Knight", folder: "hollow-knight" },
-            { title: "Level Devil", folder: "level-devil" }
-        ];
+  <script>
+    const games = [
+      { title: "Minecraft", folder: "minecraft" },
+      { title: "Geometry Dash", folder: "geometry-dash" },
+      { title: "Hollow Knight", folder: "hollow-knight" },
+      { title: "Level Devil", folder: "level-devil" }
+    ];
 
-        const params = new URLSearchParams(window.location.search);
-        const folder = params.get("folder");
+    const p = new URLSearchParams(location.search);
+    const f = p.get("folder");
+    const g = games.find(x => x.folder === f);
 
-        const game = games.find(g => g.folder === folder);
-        const titleEl = document.getElementById("gameTitle");
-        const frameEl = document.getElementById("gameFrame");
-        const frameWrap = document.getElementById("frameWrap");
+    const titleEl = document.getElementById("gameTitle");
+    const frameEl = document.getElementById("frame");
 
-        if (game) {
-            titleEl.textContent = game.title;
-            frameEl.src = `games/${game.folder}/index.html`;
-        } else {
-            titleEl.textContent = "Game not found";
-            frameWrap.innerHTML = `
-                <div class="error-box">
-                    <h2>Game not found</h2>
-                    <p>Please check whether the folder name matches the code.</p>
-                </div>
-            `;
-        }
-    </script>
+    if (g) {
+      titleEl.textContent = g.title;
+      frameEl.src = "games/" + g.folder + "/index.html";
+    } else {
+      titleEl.textContent = "Game not found";
+    }
+  </script>
 </body>
 </html>
