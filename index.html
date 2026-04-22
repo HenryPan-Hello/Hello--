@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello</title>
     <style>
-        /* 全局深色赛博朋克设定 */
         body, html {
             margin: 0;
             padding: 0;
@@ -16,7 +15,6 @@
             overflow-x: hidden;
         }
 
-        /* 3D 星际穿梭画布 */
         #warp-canvas {
             position: fixed;
             top: 0;
@@ -36,7 +34,6 @@
             padding: 4rem 2rem;
         }
 
-        /* 霓虹故障风标题 */
         h1 {
             font-size: 4rem;
             text-transform: uppercase;
@@ -44,13 +41,12 @@
             letter-spacing: 4px;
             margin-bottom: 2rem;
             color: #fff;
-            text-shadow: 
+            text-shadow:
                 0 0 10px #0ff,
                 0 0 20px #0ff,
                 0 0 40px #00aaff;
         }
 
-        /* 赛博风搜索框 */
         .search-wrapper {
             width: 100%;
             max-width: 500px;
@@ -82,7 +78,6 @@
             background: rgba(0, 30, 50, 0.9);
         }
 
-        /* 游戏卡片网格 */
         #gameGrid {
             display: flex;
             flex-wrap: wrap;
@@ -92,7 +87,6 @@
             max-width: 1100px;
         }
 
-        /* 流光边框卡片设计 */
         .game-card {
             position: relative;
             width: 280px;
@@ -102,13 +96,11 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: rgba(10, 10, 15, 0.9);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-            /* 居中内容 */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* 核心特效：旋转的锥形渐变背景（实现流光边框） */
         .game-card::before {
             content: '';
             position: absolute;
@@ -119,7 +111,6 @@
             animation: rotate-border 4s linear infinite;
         }
 
-        /* 内部遮罩，挡住中间的渐变，只留出边框 */
         .game-card::after {
             content: '';
             position: absolute;
@@ -136,7 +127,6 @@
 
         .game-card:hover {
             transform: translateY(-10px) scale(1.05);
-            /* 悬停时外发光变强 */
         }
 
         .game-card:hover::before {
@@ -157,7 +147,6 @@
             margin-bottom: 25px;
         }
 
-        /* 霓虹游戏按钮 */
         .play-btn {
             display: inline-block;
             padding: 10px 35px;
@@ -184,51 +173,96 @@
         .hidden {
             display: none !important;
         }
+
+        .empty-tip {
+            margin-top: 24px;
+            color: #8fa7c7;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
-
     <canvas id="warp-canvas"></canvas>
 
     <div class="container">
         <h1>HELLO</h1>
-        
+
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Initialize search sequence...">
+            <input type="text" id="searchInput" placeholder="Initialize search sequence..." />
         </div>
 
-        <main id="gameGrid">
-            <div class="game-card">
-                <h3>Minecraft</h3>
-                <p>Sandbox / Technical</p>
-                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=minecraft" class="play-btn">Play</a>
-            </div>
-            <div class="game-card">
-                <h3>Geometry Dash</h3>
-                <p>Rhythm / Action</p>
-                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=geometry-dash" class="play-btn">Play</a>
-            </div>
-            <div class="game-card">
-                <h3>Hollow Knight</h3>
-                <p>Metroidvania</p>
-                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=hollow-knight" class="play-btn">Play</a>
-            </div>
-        </main>
+        <main id="gameGrid"></main>
+        <div id="emptyTip" class="empty-tip" style="display:none;">No matching games found.</div>
     </div>
 
-    <div id="google_translate_element" style="display: none;"></div>
-
     <script>
-        // ==================================================
-        // 超光速星际穿梭 (Warp Speed) 3D 动画特效
-        // ==================================================
+        const games = [
+            {
+                title: "Minecraft",
+                desc: "Sandbox / Technical",
+                folder: "minecraft"
+            },
+            {
+                title: "Geometry Dash",
+                desc: "Rhythm / Action",
+                folder: "geometry-dash"
+            },
+            {
+                title: "Hollow Knight",
+                desc: "Metroidvania",
+                folder: "hollow-knight"
+            },
+            {
+                title: "Level Devil",
+                desc: "Trap Platformer",
+                folder: "level-devil"
+            }
+        ];
+
+        const gameGrid = document.getElementById("gameGrid");
+        const searchInput = document.getElementById("searchInput");
+        const emptyTip = document.getElementById("emptyTip");
+
+        function renderGames(list) {
+            gameGrid.innerHTML = "";
+
+            if (list.length === 0) {
+                emptyTip.style.display = "block";
+                return;
+            }
+
+            emptyTip.style.display = "none";
+
+            list.forEach(game => {
+                const card = document.createElement("div");
+                card.className = "game-card";
+                card.innerHTML = `
+                    <h3>${game.title}</h3>
+                    <p>${game.desc}</p>
+                    <a href="game.html?folder=${encodeURIComponent(game.folder)}" class="play-btn">Play</a>
+                `;
+                gameGrid.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener("input", (e) => {
+            const keyword = e.target.value.toLowerCase().trim();
+            const filtered = games.filter(game =>
+                game.title.toLowerCase().includes(keyword) ||
+                game.desc.toLowerCase().includes(keyword)
+            );
+            renderGames(filtered);
+        });
+
+        renderGames(games);
+
         const canvas = document.getElementById('warp-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         let stars = [];
-        const numStars = 600; // 星星数量
-        const speed = 8;      // 飞行速度
-        const fov = 400;      // 视场角缩放系数
+        const numStars = 600;
+        const speed = 8;
+        const fov = 400;
 
         function resize() {
             width = window.innerWidth;
@@ -244,15 +278,13 @@
                 this.reset();
             }
             reset() {
-                // 随机分布在 3D 坐标系中
                 this.x = (Math.random() - 0.5) * 3000;
                 this.y = (Math.random() - 0.5) * 3000;
                 this.z = Math.random() * 2000;
-                this.pz = this.z; // 记录上一帧的 Z 坐标用于画拖尾线
+                this.pz = this.z;
             }
             update() {
                 this.z -= speed;
-                // 如果星星飞过屏幕，重置到远处
                 if (this.z < 1) {
                     this.reset();
                     this.z = 2000;
@@ -260,34 +292,28 @@
                 }
             }
             draw() {
-                // 3D 投影到 2D 屏幕
                 let sx = (this.x / this.z) * fov + width / 2;
                 let sy = (this.y / this.z) * fov + height / 2;
                 let px = (this.x / this.pz) * fov + width / 2;
                 let py = (this.y / this.pz) * fov + height / 2;
-
-                // 距离越近越亮，颜色由紫红向青色渐变
                 let depthRatio = 1 - (this.z / 2000);
-                
+
                 ctx.beginPath();
                 ctx.moveTo(px, py);
                 ctx.lineTo(sx, sy);
                 ctx.lineWidth = depthRatio * 3;
-                // 赛博朋克色调：青色
-                ctx.strokeStyle = `rgba(0, 255, 255, ${depthRatio})`; 
+                ctx.strokeStyle = `rgba(0, 255, 255, ${depthRatio})`;
                 ctx.stroke();
 
                 this.pz = this.z;
             }
         }
 
-        // 初始化星星
         for (let i = 0; i < numStars; i++) {
             stars.push(new Star());
         }
 
         function animate() {
-            // 半透明填充实现运动拖尾模糊效果
             ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
             ctx.fillRect(0, 0, width, height);
 
@@ -299,27 +325,6 @@
             requestAnimationFrame(animate);
         }
         animate();
-
-        // ==================================================
-        // 游戏搜索过滤
-        // ==================================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('searchInput');
-            const gameCards = document.querySelectorAll('.game-card');
-
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase().trim();
-
-                gameCards.forEach(card => {
-                    const title = card.querySelector('h3').textContent.toLowerCase();
-                    if (title.includes(searchTerm)) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            });
-        });
     </script>
 </body>
 </html>
