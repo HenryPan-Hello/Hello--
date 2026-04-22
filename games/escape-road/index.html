@@ -23,13 +23,4 @@
     cursor: pointer;
   }
 
-<script>
-  function toggleFullScreen() {
-    let iframe = document.getElementById("iframehtml5");
-    if (!document.fullscreenElement) {
-      iframe.requestFullscreen().catch(err => console.log(err));
-    } else {
-      document.exitFullscreen();
-    }
-  }
 </script>
