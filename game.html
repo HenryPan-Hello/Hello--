@@ -197,12 +197,23 @@
             <input type="text" id="searchInput" placeholder="Initialize search sequence...">
         </div>
 
-        
-        const games=[{title:"Minecraft",folder:"minecraft"},{title:"Geometry Dash",folder:"geometry-dash"},{title:"Hollow Knight",folder:"hollow-knight"},{title:"Escape road",folder:"escape-road"}];
-        const p=new URLSearchParams(location.search);const f=p.get("folder");
-        const g=games.find(x=>x.folder===f);
-        if(g){document.getElementById("gameTitle").innerText=g.title;document.getElementById("frame").src="games/"+g.folder+"/index.html";}
-        </script></body></html>
+        <main id="gameGrid">
+            <div class="game-card">
+                <h3>Minecraft</h3>
+                <p>Sandbox / Technical</p>
+                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=minecraft" class="play-btn">Play</a>
+            </div>
+            <div class="game-card">
+                <h3>Geometry Dash</h3>
+                <p>Rhythm / Action</p>
+                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=geometry-dash" class="play-btn">Play</a>
+            </div>
+            <div class="game-card">
+                <h3>Hollow Knight</h3>
+                <p>Metroidvania</p>
+                <a href="https://henrypan-hello.github.io/Hello--/game.html?folder=hollow-knight" class="play-btn">Play</a>
+            </div>
+        </main>
     </div>
 
     <div id="google_translate_element" style="display: none;"></div>
@@ -312,8 +323,3 @@
     </script>
 </body>
 </html>
-const games=[{title:"Minecraft",folder:"minecraft"},{title:"Geometry Dash",folder:"geometry-dash"},{title:"Hollow Knight",folder:"hollow-knight"},{title:"Escape road",folder:"escape-road"}];
-const p=new URLSearchParams(location.search);const f=p.get("folder");
-const g=games.find(x=>x.folder===f);
-if(g){document.getElementById("gameTitle").innerText=g.title;document.getElementById("frame").src="games/"+g.folder+"/index.html";}
-</script></body></html>
