@@ -6,7 +6,7 @@
 <title>HELLO</title>
 
 <style>
-/* ✅ 修复滚动问题关键 */
+
 html, body {
     margin: 0;
     padding: 0;
@@ -15,10 +15,10 @@ html, body {
     color: #fff;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
-    overflow-y: auto; /* ⭐关键 */
+    overflow-y: auto; 
 }
 
-/* 星空背景 */
+
 #warp-canvas {
     position: fixed;
     top: 0;
@@ -33,7 +33,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px 120px; /* ⭐底部加空间 */
+    padding: 60px 20px 120px; 
 }
 
 /* 标题 */
